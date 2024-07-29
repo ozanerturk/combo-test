@@ -1,0 +1,121 @@
+<html>
+<script type="module">
+    import Engine from "./engine.js"
+    import combo from "./combo.js"
+    import Score from "./score.js"
+    import util from "./util.js"
+    import SkillBox from "./skillBox.js"
+    import Player from "./player.js"
+    import Skill from "./skill.js"
+
+    let engine = new Engine({
+        canvas: document.getElementById("canvas"),
+        width: 800,
+        height: 600
+    })
+    
+    let score = new Score({ x: 200, y: 20, fontSize: 20 })
+    let player = new Player({ name: "player" })
+
+    let skill_punch = new Skill({
+        name: "punch",
+        castTime: 1200,
+        coolDown: 1000,
+    })
+
+    let skill_kick = new Skill({
+        name: "kick",
+        castTime: 1000,
+        coolDown: 3000,
+    })
+
+    let skill_slap = new Skill({
+        name: "slap",
+        castTime: 1000,
+        coolDown: 1200,
+    })
+
+    player.addSkill(skill_punch)
+    player.addSkill(skill_kick)
+    player.addSkill(skill_slap)
+
+
+
+    let skillBox1 = new SkillBox({
+        skill: skill_punch,
+        x: 100,
+        y: 200,
+        size: 100
+    })
+    let skillBox2 = new SkillBox({
+        skill: skill_kick,
+        x: 300,
+        y: 200,
+        size: 100
+    })
+    let skillBox3 = new SkillBox({
+        skill: skill_slap,
+        x: 500,
+        y: 200,
+        size: 100
+    })
+
+    function init() {
+        console.log("init")
+        engine.add(player);
+        engine.add(combo);
+        engine.add(score);
+        engine.add(skill_punch);
+        engine.add(skill_kick);
+        engine.add(skill_slap);
+        engine.add(skillBox1);
+        engine.add(skillBox2);
+        engine.add(skillBox3);
+        engine.start();
+    }
+
+    window.addEventListener("keydown", (e) => {
+        if (e.code == "Space") {
+            e.preventDefault()
+            combo.start(2000);
+        } else if (e.code == "KeyA") {
+            let skill = player.useSkill("punch");
+            if (skill) {
+                if (combo.hit(skill.castTime)) {
+                    score.increase()
+                } else {
+                    score.set(0)
+                }
+            }
+        } else if (e.code == "KeyS") {
+            let skill = player.useSkill("kick")
+            if (skill) {
+                if (combo.hit(skill.castTime)) {
+                    score.increase()
+                } else {
+                    score.set(0)
+                }
+            }
+        } else if (e.code == "KeyD") {
+            let skill = player.useSkill("slap")
+            if (skill) {
+                if (combo.hit(skill.castTime)) {
+                    score.increase()
+                } else {
+                    score.set(0)
+                }
+            }
+        }
+    })
+    window.init = init
+
+</script>
+
+<body onload="init()">
+
+    <canvas id="canvas">
+        Your browser does not support the HTML5 canvas.
+    </canvas>
+</body>
+
+</html>
