@@ -77,33 +77,28 @@
     window.addEventListener("keydown", (e) => {
         if (e.code == "Space") {
             e.preventDefault()
+            score.set(0)
             combo.start(2000);
         } else if (e.code == "KeyA") {
             let skill = player.useSkill("punch");
             if (skill) {
                 if (combo.hit(skill.castTime)) {
                     score.increase()
-                } else {
-                    score.set(0)
-                }
+                } 
             }
         } else if (e.code == "KeyS") {
             let skill = player.useSkill("kick")
             if (skill) {
                 if (combo.hit(skill.castTime)) {
                     score.increase()
-                } else {
-                    score.set(0)
-                }
+                } 
             }
         } else if (e.code == "KeyD") {
             let skill = player.useSkill("slap")
             if (skill) {
                 if (combo.hit(skill.castTime)) {
                     score.increase()
-                } else {
-                    score.set(0)
-                }
+                } 
             }
         }
     })
